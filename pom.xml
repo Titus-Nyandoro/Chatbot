@@ -42,6 +42,15 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-tika-document-reader</artifactId>
 		</dependency>
+
+<!--		Africa's Talking-->
+		<dependency>
+			<groupId>com.github.AfricasTalkingLtd.africastalking-java</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.11</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-neo4j-store-spring-boot-starter</artifactId>
@@ -102,6 +111,10 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
