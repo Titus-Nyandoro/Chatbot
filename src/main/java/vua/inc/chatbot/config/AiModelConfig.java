@@ -2,6 +2,9 @@ package vua.inc.chatbot.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.embedding.EmbeddingClient;
+import org.springframework.ai.openai.OpenAiEmbeddingClient;
+import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
@@ -23,6 +26,9 @@ import java.util.List;
 public class AiModelConfig {
     @Value("classpath:/info.txt")
     private Resource info;
+
+    @Value("${spring.ai.openai.api-key}")
+    private String key;
     @Bean
     ApplicationRunner loadInfo(VectorStore vectorStore){
         return args -> {
@@ -33,5 +39,11 @@ public class AiModelConfig {
 
             vectorStore.add(splitDocuments);
         };
+    }
+    @Bean
+    public EmbeddingClient embeddingClient() {
+        System.out.println("some key ====>" + key);
+        // Can be any other EmbeddingClient implementation.
+        return new OpenAiEmbeddingClient(new OpenAiApi(key));
     }
 }
