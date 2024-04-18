@@ -33,26 +33,26 @@ public class DocumentsDownloaderService {
                 throw new IllegalArgumentException("Resource provided not a pdf");
             }
 
-            // FileOutputStream outputStream = new FileOutputStream("src/main/resources/downloaded.pdf");
-            // byte[] byteArray = new byte[1024]; 
-            // int readLength;
+            FileOutputStream outputStream = new FileOutputStream("src/main/resources/downloaded.pdf");
+            byte[] byteArray = new byte[1024]; 
+            int readLength;
             // URL url = new URL(pdfUrl);
-            // InputStream inputStream = pdfUrl.openStream();
-            Path tempDir = Paths.get("src/main/resources/");
             InputStream inputStream = pdfUrl.openStream();
-            Path tempFile = Files.createTempFile(tempDir,"downloadedFile", ".pdf");
-            Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
-            // while ((readLength = inputStream.read(byteArray)) > 0) {
-            //     outputStream.write(byteArray, 0, readLength);
-            // }
-            inputStream.close();
-            // /outputStream.flush();
-            
-           
-            
-           
-            // outputStream.close();
+            // Path tempDir = Paths.get("src/main/resources/");
+            // InputStream inputStream = pdfUrl.openStream();
+            // Path tempFile = Files.createTempFile(tempDir,"downloadedFile", ".pdf");
+            // Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
+            while ((readLength = inputStream.read(byteArray)) > 0) {
+                outputStream.write(byteArray, 0, readLength);
+            }
             // inputStream.close();
+            outputStream.flush();
+            
+           
+            
+           
+            outputStream.close();
+            inputStream.close();
             
            
             
