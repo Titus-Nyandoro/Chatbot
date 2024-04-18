@@ -8,11 +8,11 @@
 
 ==OPENING_HOUR
 
-·08:00
+·0800hrs
 
 ==CLOSING_HOUR
 
-·18:00
+·1800hrs
 
 ==DESCRIPTION
 
