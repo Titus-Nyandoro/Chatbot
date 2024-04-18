@@ -1,7 +1,6 @@
 package vua.inc.chatbot.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -17,14 +16,13 @@ import org.springframework.stereotype.Service;
 import vua.inc.chatbot.model.Answer;
 import vua.inc.chatbot.model.Question;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ChatService {
+public class VuaChatService {
     private final VectorStore serviceVectorStore;
     private final OpenAiChatClient chatClient;
     @Value("classpath:/system-info-prompt.st")
