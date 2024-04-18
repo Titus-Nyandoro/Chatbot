@@ -17,9 +17,12 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import redis.clients.jedis.Connection;
 import redis.clients.jedis.Jedis;
+import vua.inc.chatbot.service.DocumentsDownloaderService;
+import vua.inc.chatbot.utils.Constants;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @Slf4j
@@ -29,6 +32,11 @@ public class AiModelConfig {
 
     @Value("${spring.ai.openai.api-key}")
     private String key;
+
+    private final DocumentsDownloaderService documentsDownloaderService;
+    public AiModelConfig(DocumentsDownloaderService docService){
+        this.documentsDownloaderService = docService;
+    }
     @Bean
     ApplicationRunner loadInfo(VectorStore vectorStore){
         return args -> {
@@ -38,6 +46,11 @@ public class AiModelConfig {
             List<Document> splitDocuments = textSplitter.apply(documents);
 
             vectorStore.add(splitDocuments);
+            TikaDocumentReader documentReader2 = new TikaDocumentReader(getDocumentsFromLink());
+            List<Document> documentsFromLinks = documentReader2.get();
+            List<Document> splitLinkDocuments = textSplitter.apply(documentsFromLinks);
+            vectorStore.add(splitLinkDocuments);
+            
         };
     }
     @Bean
@@ -46,4 +59,21 @@ public class AiModelConfig {
         // Can be any other EmbeddingClient implementation.
         return new OpenAiEmbeddingClient(new OpenAiApi(key));
     }
+
+    @Bean
+    public String getDocumentsFromLink() {
+        return Constants.DOWNLOAD_LIST.stream()
+                .map(url -> {
+                    try {
+                        return documentsDownloaderService.loadDocument(url);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to load document from " + url, e);
+                    }
+                })
+                .collect(Collectors.joining("\n"));
+
+        
+    }
+
+    
 }
