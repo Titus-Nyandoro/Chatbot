@@ -51,4 +51,9 @@ public class VuaChatService {
         PromptTemplate promptTemplate = new PromptTemplate(systemInfoPrompt);
         return promptTemplate.createMessage(Map.of("documents", docs));
     }
+
+    public String askQuestion(String question) {
+        Answer answer = generateResponse(Question.builder().question(question).build());
+        return answer.answer();
+    }
 }
