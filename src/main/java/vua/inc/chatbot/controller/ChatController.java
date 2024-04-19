@@ -4,16 +4,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import vua.inc.chatbot.model.Answer;
+import vua.inc.chatbot.model.ChatContextExchange;
 import vua.inc.chatbot.model.Question;
 import vua.inc.chatbot.model.SMS;
 import vua.inc.chatbot.model.dtos.IncomingSmsDTO;
 import vua.inc.chatbot.model.dtos.SmsRequest;
 import vua.inc.chatbot.model.dtos.SmsResponse;
+import vua.inc.chatbot.repo.ChatContextRepository;
 import vua.inc.chatbot.service.VuaChatService;
 import vua.inc.chatbot.service.sms.SmsService;
 import vua.inc.chatbot.utils.AppUtils;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,6 +31,7 @@ import java.util.List;
 public class ChatController {
     private final VuaChatService vuaChatService;
     private final SmsService smsService;
+    private final ChatContextRepository chatContextRepository ;
 
 
     @PostMapping("/send")
@@ -53,7 +62,12 @@ public class ChatController {
 
 
     @PostMapping
-    public ResponseEntity<Answer> ask(@RequestBody Question question){
-        return ResponseEntity.ok(vuaChatService.generateResponse(question));
+    public ResponseEntity<Answer> ask(@RequestBody Question question, HttpServletRequest request){
+        return ResponseEntity.ok(vuaChatService.generateResponse(question,request.getSession().getId()));
+    }
+    @GetMapping("/context")
+    public ResponseEntity<List<String>> getContexts(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return ResponseEntity.ok(chatContextRepository.findAllPastHour(attributes.getSessionId(), Instant.now().minusMillis(60*60*1000)));
     }
 }

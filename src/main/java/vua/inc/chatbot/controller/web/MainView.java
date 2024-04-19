@@ -2,15 +2,18 @@ package vua.inc.chatbot.controller.web;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import vua.inc.chatbot.model.ChatContextExchange;
+import vua.inc.chatbot.repo.ChatContextRepository;
 import vua.inc.chatbot.service.VuaChatService;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,9 @@ public class MainView extends VerticalLayout {
 
     @Autowired
     private VuaChatService vuaChatService;
+    @Autowired
+    private ChatContextRepository chatContextRepository;
+    private static  final int CHAT_CONTEXT_LIMIT = 15;
 
     private Div chatMessages;
     private TextField userInput;
@@ -49,6 +55,7 @@ public class MainView extends VerticalLayout {
     private boolean sessionActive = false;
 
     private List<String> chatContext;
+
 
 
 
@@ -104,7 +111,19 @@ public class MainView extends VerticalLayout {
     }
 
     private void sendMessage(String message) {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         chatContext.add("You: " + message);
+        //update context
+
+        if(chatContext.size()> CHAT_CONTEXT_LIMIT){
+            chatContext.remove(0);
+        }
+        //save the message to chat context for use later when sending the prompt
+        chatContextRepository.save(ChatContextExchange.builder()
+                .chatMessages("You"+message)
+                .createdAt(Instant.now())
+                .sessionId(attributes.getSessionId())
+                .build());
         chatMessages.add(createMessageDiv("You: " + message, "user", "dummy_avatar.png"));
         // Logic to process user message and generate system response
         chatMessages.add(createLoadingMessage());
@@ -112,6 +131,7 @@ public class MainView extends VerticalLayout {
         chatMessages.remove(chatMessages.getComponentAt(chatMessages.getComponentCount() - 1));
         chatContext.add("VUA: " + systemResponse);
         chatMessages.add(createMessageDiv("VUA: " + systemResponse, "system", "system_logo.png"));
+
     }
 
     private Div createMessageDiv(String message, String messageType, String image) {
