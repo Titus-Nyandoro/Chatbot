@@ -43,6 +43,7 @@ public class VuaChatService {
         if(chatContextExchanges.size()> CHAT_CONTEXT_LIMIT){
             List<ChatContextExchange> chatContext = chatContextRepository.findAll();
             chatContextExchanges.remove(0);
+            chatContextExchanges.remove(0);
             chatContextRepository.saveAll(chatContext);
         }
         if(chatContextExchanges.isEmpty() ){
