@@ -36,13 +36,18 @@ public class VuaChatService {
     private  final ChatContextRepository chatContextRepository;
     @Value("classpath:/system-info-prompt.st")
     private Resource systemInfoPrompt;
-
+    private static  final int CHAT_CONTEXT_LIMIT = 15;
     // generate response
     public Answer generateResponse(Question question,  String sessionId){
         //retrieve context before answering
         String context="";
 
-        List<String> chatContextExchanges = chatContextRepository.findAllPastHour(sessionId, Instant.now().minusMillis(60*60*60));
+        List<String> chatContextExchanges = chatContextRepository.findAllPastHour(sessionId);
+        if(chatContextExchanges.size()> CHAT_CONTEXT_LIMIT){
+            List<ChatContextExchange> chatContext = chatContextRepository.findAll();
+            chatContextExchanges.remove(0);
+            chatContextRepository.saveAll(chatContext);
+        }
         if(chatContextExchanges.isEmpty() ){
             context = "";
         }else{
@@ -59,6 +64,11 @@ public class VuaChatService {
         // build prompt
         Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
         ChatResponse response = chatClient.call(prompt);
+        var chatContexts = List.of(
+            ChatContextExchange.builder().chatMessages(question.question()).sessionId(sessionId).createdAt(Instant.now()).build(),
+            ChatContextExchange.builder().chatMessages(response.getResult().getOutput().getContent()).sessionId(sessionId).createdAt(Instant.now()).build()
+        );
+        chatContextRepository.saveAll(chatContexts);
         return new Answer(response.getResult().getOutput().getContent());
     }
     // get system messages

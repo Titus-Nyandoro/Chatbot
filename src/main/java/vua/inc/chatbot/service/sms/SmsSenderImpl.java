@@ -131,12 +131,6 @@ public class SmsSenderImpl implements SmsSender {
         log.info("sending sms to > ", sms.from());
 
         sendSms(new SmsRequest(answer.answer(),new String[]{sms.from()}));
-        //save context for next chat
-        chatContextRepository.save(ChatContextExchange.builder()
-                .sessionId(sms.from())
-                .chatMessages(sms.text())
-                .createdAt(Instant.now())
-                .build());
         log.info("sms sent to > ", sms.from());
     }
 
