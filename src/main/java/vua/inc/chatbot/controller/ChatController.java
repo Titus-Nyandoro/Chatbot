@@ -12,7 +12,6 @@ import vua.inc.chatbot.model.SMS;
 import vua.inc.chatbot.model.dtos.IncomingSmsDTO;
 import vua.inc.chatbot.model.dtos.SmsRequest;
 import vua.inc.chatbot.model.dtos.SmsResponse;
-import vua.inc.chatbot.repo.ChatContextRepository;
 import vua.inc.chatbot.service.VuaChatService;
 import vua.inc.chatbot.service.sms.SmsService;
 import vua.inc.chatbot.utils.AppUtils;
@@ -26,8 +25,7 @@ import java.util.List;
 public class ChatController {
     private final VuaChatService vuaChatService;
     private final SmsService smsService;
-    private final ChatContextRepository chatContextRepository ;
-
+   
 
     @PostMapping("/send")
     public ResponseEntity<SmsResponse> SendSms(@RequestBody SmsRequest smsRequest) {

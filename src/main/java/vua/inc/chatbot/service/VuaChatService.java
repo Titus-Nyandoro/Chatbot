@@ -1,9 +1,7 @@
 package vua.inc.chatbot.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.ChatResponse;
-import org.springframework.ai.chat.messages.ChatMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -23,7 +21,6 @@ import vua.inc.chatbot.model.Question;
 import vua.inc.chatbot.repo.ChatContextRepository;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,7 +61,7 @@ public class VuaChatService {
         // build prompt
         Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
         ChatResponse response = chatClient.call(prompt);
-        var chatContexts = List.of(
+        List<ChatContextExchange> chatContexts = List.of(
             ChatContextExchange.builder().chatMessages(question.question()).sessionId(sessionId).createdAt(Instant.now()).build(),
             ChatContextExchange.builder().chatMessages(response.getResult().getOutput().getContent()).sessionId(sessionId).createdAt(Instant.now()).build()
         );

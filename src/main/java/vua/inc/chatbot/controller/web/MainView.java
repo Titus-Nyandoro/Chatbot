@@ -2,7 +2,9 @@ package vua.inc.chatbot.controller.web;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -39,8 +41,6 @@ public class MainView extends VerticalLayout {
 
     @Autowired
     private VuaChatService vuaChatService;
-    @Autowired
-     
 
     private Div chatMessages;
     private TextField userInput;
@@ -49,7 +49,6 @@ public class MainView extends VerticalLayout {
     private boolean sessionActive = false;
 
     private List<String> chatContext;
-
 
 
 
@@ -106,7 +105,6 @@ public class MainView extends VerticalLayout {
 
     private void sendMessage(String message) {
         chatContext.add("You: " + message);
-       
         chatMessages.add(createMessageDiv("You: " + message, "user", "dummy_avatar.png"));
         // Logic to process user message and generate system response
         chatMessages.add(createLoadingMessage());
@@ -114,7 +112,6 @@ public class MainView extends VerticalLayout {
         chatMessages.remove(chatMessages.getComponentAt(chatMessages.getComponentCount() - 1));
         chatContext.add("VUA: " + systemResponse);
         chatMessages.add(createMessageDiv("VUA: " + systemResponse, "system", "system_logo.png"));
-
     }
 
     private Div createMessageDiv(String message, String messageType, String image) {
