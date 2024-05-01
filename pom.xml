@@ -43,6 +43,11 @@
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-tika-document-reader</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.springboot.ai</groupId>
+			<artifactId>spring-ai-pdf-document-reader</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 <!--		Africa's Talking-->
 		<dependency>
