@@ -36,7 +36,7 @@ public class AiModelConfig {
             PagePdfDocumentReader pagePdfDocumentReaderFAQ = new PagePdfDocumentReader(faq);
             List<Document> faqDocs = pagePdfDocumentReaderFAQ.get();
            vectorStore.add(faqDocs);
-           PagePdfDocumentReader pagePdfDocumentReaderFinance = new PagePdfDocumentReader(faq);
+           PagePdfDocumentReader pagePdfDocumentReaderFinance = new PagePdfDocumentReader(finance);
             List<Document> financeDocs = pagePdfDocumentReaderFinance.get();
            vectorStore.add(financeDocs);
             
