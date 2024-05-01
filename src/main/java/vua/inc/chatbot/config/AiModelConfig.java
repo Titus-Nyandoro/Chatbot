@@ -13,12 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
-import redis.clients.jedis.Connection;
-import redis.clients.jedis.Jedis;
 
-import java.io.File;
 import java.util.List;
 
 @Configuration
@@ -46,4 +42,5 @@ public class AiModelConfig {
         // Can be any other EmbeddingClient implementation.
         return new OpenAiEmbeddingClient(new OpenAiApi(key));
     }
+  
 }

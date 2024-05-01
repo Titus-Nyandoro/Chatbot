@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpServletRequest;
 import vua.inc.chatbot.model.Answer;
 import vua.inc.chatbot.model.Question;
 import vua.inc.chatbot.model.SMS;
@@ -23,7 +25,7 @@ import java.util.List;
 public class ChatController {
     private final VuaChatService vuaChatService;
     private final SmsService smsService;
-
+   
 
     @PostMapping("/send")
     public ResponseEntity<SmsResponse> SendSms(@RequestBody SmsRequest smsRequest) {
@@ -53,7 +55,8 @@ public class ChatController {
 
 
     @PostMapping
-    public ResponseEntity<Answer> ask(@RequestBody Question question){
-        return ResponseEntity.ok(vuaChatService.generateResponse(question));
+    public ResponseEntity<Answer> ask(@RequestBody Question question, HttpServletRequest request){
+        return ResponseEntity.ok(vuaChatService.generateResponse(question,request.getSession().getId()));
     }
+  
 }

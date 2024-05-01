@@ -7,7 +7,7 @@ import vua.inc.chatbot.model.SMS;
 import vua.inc.chatbot.model.dtos.IncomingSmsDTO;
 import vua.inc.chatbot.model.dtos.SmsRequest;
 import vua.inc.chatbot.model.dtos.SmsResponse;
-import vua.inc.chatbot.repo.SmsRepository;;
+import vua.inc.chatbot.repo.SmsRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;

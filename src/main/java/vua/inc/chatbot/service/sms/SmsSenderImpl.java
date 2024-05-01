@@ -10,16 +10,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import vua.inc.chatbot.config.SmsConfiguration;
 import vua.inc.chatbot.model.Answer;
+import vua.inc.chatbot.model.ChatContextExchange;
 import vua.inc.chatbot.model.Question;
 import vua.inc.chatbot.model.SMS;
 import vua.inc.chatbot.model.dtos.IncomingSmsDTO;
 import vua.inc.chatbot.model.dtos.SmsRequest;
 import vua.inc.chatbot.model.dtos.SmsResponse;
+import vua.inc.chatbot.repo.ChatContextRepository;
 import vua.inc.chatbot.repo.SmsRepository;
 import vua.inc.chatbot.service.VuaChatService;
 import vua.inc.chatbot.utils.AppUtils;
 
 import java.text.MessageFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @RequiredArgsConstructor
 public class SmsSenderImpl implements SmsSender {
-
+    private final ChatContextRepository chatContextRepository;
     private final SmsConfiguration smsConfiguration;
     private final SmsRepository smsRepository;
     private final VuaChatService chatService;
@@ -40,7 +43,9 @@ public class SmsSenderImpl implements SmsSender {
     private static final String PHONE_REGEX = "^\\+2547\\d{8}$";
     private static final Pattern pattern = Pattern.compile(PHONE_REGEX);
     @Override
+
     public SmsResponse sendSms(SmsRequest smsRequest) {
+
 
         SmsResponse smsResponse = null;
         /**
@@ -122,8 +127,9 @@ public class SmsSenderImpl implements SmsSender {
 
         // generate sms and send it to user
         Answer answer = chatService.generateResponse(Question.builder()
-                .question(sms.text()).build());
+                .question(sms.text()).build(), sms.from());
         log.info("sending sms to > ", sms.from());
+
         sendSms(new SmsRequest(answer.answer(),new String[]{sms.from()}));
         log.info("sms sent to > ", sms.from());
     }
