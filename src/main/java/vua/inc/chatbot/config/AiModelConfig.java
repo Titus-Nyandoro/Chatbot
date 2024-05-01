@@ -14,26 +14,32 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
+import org.springframework.ai.reader.pdf.ParagraphPdfDocumentReader;
 
 import java.util.List;
 
 @Configuration
 @Slf4j
 public class AiModelConfig {
-    @Value("classpath:/info.txt")
-    private Resource info;
+    @Value("classpath:/vua-FAQ-BUILDUP.pdf")
+    private Resource faq;
+    @Value("classpath:/7.-Personal-Financial-Management-Kenya.pdf")
+    private Resource finance;
 
     @Value("${spring.ai.openai.api-key}")
     private String key;
     @Bean
     ApplicationRunner loadInfo(VectorStore vectorStore){
         return args -> {
-            TikaDocumentReader documentReader = new TikaDocumentReader(info);
-            List<Document> documents = documentReader.get();
-            TextSplitter textSplitter = new TokenTextSplitter();
-            List<Document> splitDocuments = textSplitter.apply(documents);
 
-            vectorStore.add(splitDocuments);
+            PagePdfDocumentReader pagePdfDocumentReaderFAQ = new PagePdfDocumentReader(faq);
+            List<Document> faqDocs = pagePdfDocumentReaderFAQ.get();
+           vectorStore.add(faqDocs);
+           PagePdfDocumentReader pagePdfDocumentReaderFinance = new PagePdfDocumentReader(faq);
+            List<Document> financeDocs = pagePdfDocumentReaderFinance.get();
+           vectorStore.add(financeDocs);
+            
         };
     }
     @Bean

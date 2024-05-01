@@ -108,6 +108,7 @@ public class MainView extends VerticalLayout {
         chatMessages.add(createMessageDiv("You: " + message, "user", "dummy_avatar.png"));
         // Logic to process user message and generate system response
         chatMessages.add(createLoadingMessage());
+       
         String systemResponse = generateSystemResponse(message);
         chatMessages.remove(chatMessages.getComponentAt(chatMessages.getComponentCount() - 1));
         chatContext.add("VUA: " + systemResponse);
