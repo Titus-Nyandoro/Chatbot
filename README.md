@@ -151,6 +151,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-This README provides a comprehensive guide for setting up, using, and contributing to the Spring Boot Chatbot project. Feel free to reach out if you have any questions or need further assistance. Happy coding! 🚀
-
