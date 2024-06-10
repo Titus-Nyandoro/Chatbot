@@ -5,6 +5,7 @@ Welcome to the Spring Boot Chatbot project! This application integrates multiple
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Setup Instructions](#setup-instructions)
+- [Configuration](#configuration)
 - [Project Structure](#project-structure)
 - [Key Features](#key-features)
 - [API Endpoints](#api-endpoints)
@@ -17,6 +18,9 @@ Welcome to the Spring Boot Chatbot project! This application integrates multiple
 
 - **Java 17**: Ensure that Java Development Kit (JDK) version 17 is installed on your machine.
 - **Maven**: This project uses Maven for build and dependency management. Install Maven from [here](https://maven.apache.org/install.html).
+- **Neo4j**: Download and set up a Neo4j database from [here](https://neo4j.com/download/).
+- **OpenAI API Key**: Register and obtain an API key from [OpenAI](https://beta.openai.com/signup/).
+- **Africastalking API Key**: Register and obtain your username and API key from [Africastalking](https://account.africastalking.com/).
 
 ## Setup Instructions
 
@@ -36,6 +40,36 @@ Welcome to the Spring Boot Chatbot project! This application integrates multiple
     mvn spring-boot:run
     ```
 
+## Configuration
+
+1. **OpenAI API Key**:
+    - Add your OpenAI API key to the `application.properties` file:
+    ```properties
+    openai.api.key=your_openai_api_key
+    ```
+
+2. **Africastalking Configuration**:
+    - Add your Africastalking username and API key to the `application.properties` file:
+    ```properties
+    africastalking.username=your_username
+    africastalking.api.key=your_api_key
+    africastalking.shortcode=your_sms_shortcode
+    ```
+
+3. **Neo4j Database URL**:
+    - Add your Neo4j database connection details to the `application.properties` file:
+    ```properties
+    neo4j.url=bolt://localhost:7687
+    neo4j.username=your_neo4j_username
+    neo4j.password=your_neo4j_password
+    ```
+
+4. **System Message Configuration**:
+    - Define the system message by modifying the `system-message.txt` file located in the `src/main/resources` folder. This message will be used to guide the chatbot's responses.
+
+5. **Load PDF Documents**:
+    - Add important PDF documents to the `docs` folder located in `src/main/resources`. These documents will be parsed by the chatbot for information retrieval.
+
 ## Project Structure
 
 The project follows a typical Spring Boot structure:
@@ -52,6 +86,8 @@ spring-boot-chatbot/
 │   │   │   └── Application.java  # Main Spring Boot application class
 │   │   └── resources/
 │   │       ├── application.properties  # Configuration file
+│   │       ├── system-message.txt  # System message for the chatbot
+│   │       ├── docs/  # Folder for PDF documents
 │   └── test/  # Unit and integration tests
 │
 └── pom.xml  # Maven build file
@@ -142,6 +178,12 @@ public void processIncomingSms(@ModelAttribute IncomingSmsDTO smsPayload) {
     - Configure your SMS gateway to forward messages to `/incoming`.
     - The system will process incoming messages automatically.
 
+3. **Loading PDF Documents**:
+    - Ensure that the `docs` folder under `src/main/resources` is loaded with PDF files that contain important information. The application loops through these files to parse and use the content.
+
+4. **Configuring System Message**:
+    - Modify the `system-message.txt` file located in `src/main/resources` to set up a customized system message for the chatbot.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes. Ensure your code adheres to the project’s coding standards and includes relevant tests.
@@ -150,4 +192,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
