@@ -26,8 +26,8 @@ Welcome to the Spring Boot Chatbot project! This application integrates multiple
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/your-repo/spring-boot-chatbot.git
-    cd spring-boot-chatbot
+    git clone https://github.com/Titus-Nyandoro/Chatbot.git
+    cd Chatbot
     ```
 
 2. **Build the project**:
@@ -80,10 +80,14 @@ spring-boot-chatbot/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/example/chatbot/
+│   │   │   ├── config/      # Controllers for handling API requests
 │   │   │   ├── controller/  # Controllers for handling API requests
 │   │   │   ├── service/     # Service layer for business logic
 │   │   │   ├── model/       # Domain models and DTOs
-│   │   │   └── Application.java  # Main Spring Boot application class
+│   │   │   ├── repo/        # repositories
+│   │   │   ├── service/     # Services for API processing
+│   │   │   ├── utils/       # Necessary app utils
+│   │   │   └── ChatbotApplication.java  # Main Spring Boot application class
 │   │   └── resources/
 │   │       ├── application.properties  # Configuration file
 │   │       ├── system-message.txt  # System message for the chatbot
