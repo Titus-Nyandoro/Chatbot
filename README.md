@@ -80,7 +80,7 @@ spring-boot-chatbot/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/example/chatbot/
-│   │   │   ├── config/      # Controllers for handling API requests
+│   │   │   ├── config/      # Initial Configs
 │   │   │   ├── controller/  # Controllers for handling API requests
 │   │   │   ├── service/     # Service layer for business logic
 │   │   │   ├── model/       # Domain models and DTOs
