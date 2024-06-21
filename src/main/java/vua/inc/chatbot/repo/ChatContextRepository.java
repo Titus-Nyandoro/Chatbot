@@ -12,6 +12,4 @@ public interface ChatContextRepository extends  JpaRepository<ChatContextExchang
     List<String> findAllPastHour(@Param("sessionId") String sessionId);
     @Query("DELETE FROM ChatContextExchange ce WHERE ce.sessionId = :sessionId")
     void deleteBySessionId(@Param("sessionId") String sessionId);
-   
-
 }
